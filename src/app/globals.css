@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+:root {
+  --font-inter: 'Inter', sans-serif;
+  --font-playfair: 'Playfair Display', serif;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-inter);
+    color: #1c1917;
+    background-color: #ffffff;
+  }
+
+  ::selection {
+    background-color: #1c1917;
+    color: #ffffff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #f5f5f4;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #a8a29e;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #78716c;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-stone-900 text-white px-8 py-3.5 text-sm font-medium tracking-widest uppercase transition-all duration-300 hover:bg-stone-700 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-outline {
+    @apply border border-stone-900 text-stone-900 px-8 py-3.5 text-sm font-medium tracking-widest uppercase transition-all duration-300 hover:bg-stone-900 hover:text-white active:scale-95;
+  }
+
+  .btn-whatsapp {
+    @apply bg-[#25D366] text-white px-6 py-3.5 text-sm font-medium tracking-wide transition-all duration-300 hover:bg-[#1ebe5d] active:scale-95 flex items-center gap-2;
+  }
+
+  .section-heading {
+    @apply font-serif text-3xl md:text-4xl lg:text-5xl font-medium text-stone-900 leading-tight;
+  }
+
+  .section-subheading {
+    @apply text-stone-500 text-sm tracking-[0.2em] uppercase font-medium;
+  }
+
+  .card-hover {
+    @apply transition-all duration-500 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .skeleton {
+    @apply bg-gradient-to-r from-stone-100 via-stone-200 to-stone-100 bg-[length:200%_100%] animate-shimmer;
+  }
+
+  .input-field {
+    @apply w-full border border-stone-200 bg-white px-4 py-3 text-sm text-stone-900 placeholder-stone-400 focus:outline-none focus:border-stone-900 transition-colors duration-200;
+  }
+
+  .label-field {
+    @apply block text-xs font-medium text-stone-600 uppercase tracking-wider mb-1.5;
+  }
+
+  .admin-card {
+    @apply bg-white border border-stone-100 rounded-lg p-6 shadow-sm;
+  }
+
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .announcement-bar {
+    @apply bg-stone-900 text-white text-center py-2 text-xs tracking-widest uppercase;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .grid-products {
+    @apply grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6;
+  }
+
+  .aspect-product {
+    aspect-ratio: 3/4;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Product image zoom effect */
+.product-image-wrap {
+  overflow: hidden;
+}
+
+.product-image-wrap img {
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.product-image-wrap:hover img {
+  transform: scale(1.07);
+}
+
+/* Swiper overrides */
+.swiper-pagination-bullet {
+  background: #1c1917 !important;
+  opacity: 0.3 !important;
+}
+
+.swiper-pagination-bullet-active {
+  opacity: 1 !important;
+  width: 24px !important;
+  border-radius: 3px !important;
+}
