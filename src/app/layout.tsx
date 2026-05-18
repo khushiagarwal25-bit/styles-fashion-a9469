@@ -8,32 +8,26 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
+  preload: true,
 });
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
   display: "swap",
+  preload: true,
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings();
+  const settings = await getSiteSettings(); // served from cache
 
   return {
     title: {
       default: settings.seo_title || "Styles — Premium Fashion Catalog",
       template: `%s | ${settings.store_name || "Styles"}`,
     },
-    description:
-      settings.seo_description ||
-      "Discover the latest fashion trends at Styles.",
-    keywords: [
-      "fashion",
-      "clothing",
-      "style",
-      "premium fashion",
-      settings.store_city || "Mumbai",
-    ],
+    description: settings.seo_description || "Discover the latest fashion trends at Styles.",
+    keywords: ["fashion", "clothing", "style", "premium fashion", settings.store_city || "Mumbai"],
     openGraph: {
       title: settings.seo_title || "Styles — Premium Fashion Catalog",
       description: settings.seo_description || "",
@@ -46,31 +40,19 @@ export async function generateMetadata(): Promise<Metadata> {
       title: settings.seo_title || "Styles — Premium Fashion Catalog",
       description: settings.seo_description || "",
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: { index: true, follow: true },
-    },
-    icons: {
-      icon: settings.favicon_url || "/favicon.ico",
-    },
+    robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+    icons: { icon: settings.favicon_url || "/favicon.ico" },
   };
 }
 
-export default async function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const settings = await getSiteSettings();
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const settings = await getSiteSettings(); // same cache hit — no extra DB call
 
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="min-h-screen bg-white text-stone-900 antialiased">
         {settings.announcement_bar && (
-          <div className="announcement-bar">
-            {settings.announcement_bar}
-          </div>
+          <div className="announcement-bar">{settings.announcement_bar}</div>
         )}
         {children}
         <Toaster
