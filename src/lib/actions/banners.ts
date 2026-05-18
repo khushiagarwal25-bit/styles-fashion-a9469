@@ -1,12 +1,12 @@
 "use server";
 
 import { unstable_cache } from "next/cache";
-import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { Banner } from "@/types";
 
 export const getBanners = unstable_cache(
   async (type?: "hero" | "promotional" | "category"): Promise<Banner[]> => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     let query = supabase
       .from("banners")
       .select("id, title, subtitle, image_url, link_url, cta_text, banner_type, display_order, is_active")

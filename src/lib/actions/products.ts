@@ -2,6 +2,7 @@
 
 import { unstable_cache } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { Product, ProductFilters } from "@/types";
 
 // Only fetch columns needed for product cards
@@ -94,7 +95,7 @@ export async function getRelatedProducts(
 
 export const getFeaturedProducts = unstable_cache(
   async (limit = 8): Promise<Product[]> => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("products")
       .select(CARD_FIELDS)
@@ -110,7 +111,7 @@ export const getFeaturedProducts = unstable_cache(
 
 export const getTrendingProducts = unstable_cache(
   async (limit = 8): Promise<Product[]> => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("products")
       .select(CARD_FIELDS)
@@ -126,7 +127,7 @@ export const getTrendingProducts = unstable_cache(
 
 export const getNewArrivals = unstable_cache(
   async (limit = 8): Promise<Product[]> => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("products")
       .select(CARD_FIELDS)

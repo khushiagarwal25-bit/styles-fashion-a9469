@@ -2,11 +2,12 @@
 
 import { unstable_cache } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { Category } from "@/types";
 
 export const getCategories = unstable_cache(
   async (): Promise<Category[]> => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase
       .from("categories")
       .select("id, name, slug, description, image_url, display_order, is_active, created_at, updated_at")

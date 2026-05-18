@@ -2,12 +2,13 @@
 
 import { unstable_cache } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import { SiteSettings } from "@/types";
 import { settingsArrayToObject } from "@/lib/utils";
 
 const fetchSettings = unstable_cache(
   async (): Promise<Partial<SiteSettings>> => {
-    const supabase = await createClient();
+    const supabase = createPublicClient();
     const { data } = await supabase.from("settings").select("key, value");
     if (!data) return {};
     return settingsArrayToObject(data) as Partial<SiteSettings>;
