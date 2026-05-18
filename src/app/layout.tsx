@@ -3,6 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { getSiteSettings } from "@/lib/actions/settings";
+import { getImageUrl } from "@/lib/utils";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
       description: settings.seo_description || "",
     },
     robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
-    icons: { icon: settings.favicon_url || "/favicon.ico" },
+    icons: { icon: settings.favicon_url ? getImageUrl(settings.favicon_url) : "/favicon.ico" },
   };
 }
 

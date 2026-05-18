@@ -3,6 +3,7 @@ import Footer from "./Footer";
 import WhatsAppButton from "./WhatsAppButton";
 import { getSiteSettings } from "@/lib/actions/settings";
 import { getCategories } from "@/lib/actions/categories";
+import { getImageUrl } from "@/lib/utils";
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
   const [settings, categories] = await Promise.all([
@@ -14,7 +15,7 @@ export default async function PublicLayout({ children }: { children: React.React
     <>
       <Navbar
         storeName={settings.store_name || "Styles"}
-        logoUrl={settings.logo_url || ""}
+        logoUrl={settings.logo_url ? getImageUrl(settings.logo_url) : ""}
         categories={categories}
       />
       <main className="pt-16 md:pt-20">{children}</main>
