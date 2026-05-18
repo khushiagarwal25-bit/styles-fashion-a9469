@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Upload, Save, ExternalLink } from "lucide-react";
+import { Upload, Save, ExternalLink, Lock } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import toast from "react-hot-toast";
 import { SiteSettings } from "@/types";
@@ -93,6 +93,11 @@ export default function AdminSettingsPage() {
   const [saving, setSaving] = useState(false);
   const [uploadingLogo, setUploadingLogo] = useState(false);
 
+  // Password change
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [changingPassword, setChangingPassword] = useState(false);
+
   useEffect(() => {
     const fetchSettings = async () => {
       const { data } = await supabase.from("settings").select("key, value");
@@ -139,6 +144,26 @@ export default function AdminSettingsPage() {
     if (error) toast.error(error.message);
     else toast.success("Settings saved!");
     setSaving(false);
+  };
+
+  const handlePasswordChange = async () => {
+    if (!newPassword || newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    setChangingPassword(true);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) toast.error(error.message);
+    else {
+      toast.success("Password changed successfully!");
+      setNewPassword("");
+      setConfirmPassword("");
+    }
+    setChangingPassword(false);
   };
 
   const g = (key: keyof SiteSettings) => settings[key] || "";
@@ -278,6 +303,45 @@ export default function AdminSettingsPage() {
           hint="Paste the full embed HTML from Google Maps → Share → Embed a map"
         />
       </Section>
+
+      {/* Change Password */}
+      <div className="admin-card mb-6">
+        <h2 className="font-semibold text-stone-900 mb-5 pb-3 border-b border-stone-100 flex items-center gap-2">
+          <Lock size={16} /> Change Admin Password
+        </h2>
+        <div className="space-y-4 max-w-sm">
+          <div>
+            <label className="label-field">New Password</label>
+            <input
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="input-field"
+              placeholder="Min. 6 characters"
+            />
+          </div>
+          <div>
+            <label className="label-field">Confirm New Password</label>
+            <input
+              type="password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="input-field"
+              placeholder="Re-enter new password"
+            />
+          </div>
+          <button
+            onClick={handlePasswordChange}
+            disabled={changingPassword || !newPassword || !confirmPassword}
+            className="btn-primary flex items-center gap-2 py-2.5 px-5 text-xs disabled:opacity-50"
+          >
+            {changingPassword
+              ? <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              : <Lock size={14} />}
+            {changingPassword ? "Changing..." : "Change Password"}
+          </button>
+        </div>
+      </div>
 
       {/* Save */}
       <div className="flex justify-end">

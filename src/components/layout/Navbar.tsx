@@ -58,14 +58,19 @@ export default function Navbar({ storeName, logoUrl, categories }: NavbarProps) 
       <nav className="page-container">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
-            {logoUrl ? (
-              <Image src={logoUrl} alt={storeName} width={120} height={40} className="h-8 w-auto object-contain" />
-            ) : (
-              <span className="font-serif text-2xl md:text-3xl font-semibold tracking-[0.15em] text-stone-900 uppercase">
-                {storeName}
-              </span>
+          <Link href="/" className="flex-shrink-0 flex items-center gap-3">
+            {logoUrl && (
+              <Image
+                src={logoUrl}
+                alt={storeName}
+                width={160}
+                height={52}
+                className="h-10 md:h-12 w-auto object-contain"
+              />
             )}
+            <span className="font-serif text-2xl md:text-3xl font-semibold tracking-[0.15em] text-stone-900 uppercase">
+              {storeName}
+            </span>
           </Link>
 
           {/* Desktop Nav */}
